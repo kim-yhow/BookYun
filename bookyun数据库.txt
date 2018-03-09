@@ -1,0 +1,319 @@
+/*mysql脚本*/
+/*顾客表*/
+create table tb_customer(
+	Usr_id		 int auto_increment,
+	Usr_name   	 char(30),
+	Usr_pwd   	 char(30) not null,
+	Usr_email 	 char(30) not null,
+	Usr_registertime datetime not null,
+	Usr_lastlogintm  datetime not null,
+  	PRIMARY KEY(Usr_id,Usr_name)
+);
+
+INSERT INTO tb_customer (`Usr_name`, `Usr_pwd`, `Usr_email`, `Usr_registertime`, `Usr_lastlogintm`) VALUES ('kim','123','1234@qq.com','2017-06-06 15:25:03', '2017-06-06 15:25:03');
+
+/*顾客表触发器，如果是有相同的数据在表格中，则插入一段错误的数据，完成中断插入*/
+drop TRIGGER if EXISTS tr_no_same_Usr_name;
+create TRIGGER tr_no_same_Usr_name BEFORE INSERT ON tb_customer
+For EACH ROW
+BEGIN
+  IF(new.Usr_name in(select Usr_name from tb_customer))
+    then		
+		INSERT IGNORE INTO `bookcdb`.`tb_customer` (`Usr_name`, `Usr_pwd`, `Usr_email`, `Usr_registertime`, `Usr_lastlogintm`,Usr_priority) VALUES ('lkim', '123', '1234@qq.com', 'error', '2017-06-06 15:32:46','normal');
+	END if;
+END
+
+/*管理员表*/
+create table tb_admin(
+	Ad_id int auto_increment,
+	Ad_name char(30),
+	Ad_pwd   char(30) not null,
+  	Ad_email 	 char(30) not null,
+	Ad_registertime datetime not null,
+	Ad_lastlogintm  datetime not null,
+  	PRIMARY KEY(Ad_id,Ad_name)
+);
+INSERT INTO `bookcdb`.`tb_admin` ( `Ad_name`, `Ad_pwd`, `Ad_email`, `Ad_registertime`, `Ad_lastlogintm`) VALUES ('kim_yhow','adminyh','564223274@qq.com','2017-6-6 16:00:00', '2017-6-6 16:00:00');
+
+/*管理员表触发器，如果是有相同的数据在表格中，则插入一段错误的数据，完成中断插入*/
+drop TRIGGER if EXISTS tr_no_same_Ad_name;
+create TRIGGER tr_no_same_Ad_name BEFORE INSERT ON tb_admin
+For EACH ROW
+BEGIN
+  IF(new.Ad_name in(select Ad_name from tb_admin))
+    then		
+		INSERT IGNORE INTO `bookcdb`.`tb_admin` (`Ad_name`, `Ad_pwd`, `Ad_email`, `Ad_registertime`, `Ad_lastlogintm`) VALUES ('lkim', '123', '1234@qq.com', 'error', '2017-06-06 15:32:46');
+	END if;
+END
+
+/*书本信息表*/
+create table tb_bookinfo(
+ book_id int auto_increment,
+ book_name char(30) not null,
+ book_author char(30) not null,
+ book_transor char(30),
+ book_type char(30) not null,
+ book_price DECIMAL(10,2) not null,
+ book_cost  DECIMAL(10,2) not null,
+ book_outline text,
+ book_isbn char(30) not null,
+ book_dealnum int not null,
+ book_num int not null,
+ book_storetime datetime not null,
+ book_pubtime datetime not null,
+ book_version int not null,
+ book_press char(30) not null,
+ book_photo char(30) not null,
+ book_comment int not null,
+ PRIMARY KEY(book_id)
+);
+
+
+
+
+/*图书表触发器，如果是有相同的数据在表格中，则插入一段错误的数据，完成中断插入*/
+drop TRIGGER if EXISTS tr_no_same_book_name;
+create TRIGGER tr_no_same_book_name BEFORE INSERT ON tb_bookinfo
+For EACH ROW
+BEGIN
+  IF(new.book_name in(select book_name from tb_bookinfo) and new.book_isbn in(select book_isbn from tb_bookinfo))
+    then		
+		INSERT INTO `bookcdb`.`tb_bookinfo` (`book_name`, `book_author`, `book_transor`, `book_type`, `book_price`, `book_cost`, `book_outline`, `book_isbn`, `book_dealnum`, `book_num`, `book_storetime`, `book_pubtime`, `book_version`, `book_press`, `book_photo`) VALUES (NULL);
+	END if;
+END
+
+
+
+/*当图书增加时，相应额增加图书类型中的数量*/
+drop trigger if exists tr_add_type_num;
+create trigger tr_add_type_num  before insert on tb_bookinfo
+for each row
+begin
+	if(new.book_type in(select type_name from tb_booktype))
+	then 
+		update tb_booktype set type_booknum=type_booknum+1;
+	else
+	   insert into tb_booktype(type_name,type_booknum) values (new.book_type,1);
+	end if;
+end
+
+
+
+/*订单增加，减少库存*/
+drop trigger if exists tb_order_left_num;
+create trigger tb_order_left_num  before insert on tb_order
+for each row
+begin
+		update tb_bookinfo set book_num=book_num-new.order_num where tb_bookinfo.book_id=new.order_book_id;
+end
+
+
+/*订单增加 ，增加交易量*/
+drop trigger if exists tb_order_left_num;
+create trigger tb_order_left_num  before insert on tb_order
+for each row
+begin
+		update tb_bookinfo set book_num=book_num-new.order_num where tb_bookinfo.book_id=new.order_book_id;
+end
+
+
+
+
+/*图书类型表*/
+create table tb_booktype(
+ type_id int auto_increment,
+ type_name char(30) not null,
+ type_booknum int not null,
+ PRIMARY KEY(type_id,type_name)
+)
+/*增加外键 */
+alter table tb_bookinfo add constraint FK_BOOKTYPE foreign key(book_type) references tb_booktype(type_name)
+
+/*购物车*/
+create table tb_shoppingcar(
+car_id int auto_increment PRIMARY KEY,
+car_usr char(30),
+car_book_id int,
+car_num     int not null,
+car_price	DECIMAL(10,2) not null,
+car_ispaid int not null,
+FOREIGN KEY (car_usr) REFERENCES tb_customer(Usr_name),
+FOREIGN KEY (car_book_id) REFERENCES tb_bookinfo(book_id) ON DELETE RESTRICT
+)
+
+/*订单总表*/
+create table tb_order(
+order_id 		int auto_increment,
+order_usr 	  char(30),
+product_count  int not null,
+order_price	   DECIMAL(10,2) not null,
+order_time datetime not null,
+PRIMARY KEY(order_id,order_usr),
+FOREIGN KEY (order_usr) REFERENCES tb_customer(Usr_name)
+)
+
+/*订单详情表*/
+create table tb_order_detail(
+de_id 		int auto_increment,
+order_id  int,
+book_id  	int,
+book_name	 char (30),
+de_number    INT,
+de_subtotal	 DECIMAL(10,2) not null,
+order_time datetime not null,
+PRIMARY key(de_id)
+)
+
+
+
+
+/*留言板*/
+create table tb_lvmsg(
+msg_id int auto_increment PRIMARY KEY,
+msg_title char(50) not null,
+msg_cntent text not null,
+msg_usr_name char(30) not null,
+msg_usr_ip char(30) not null,
+msg_date datetime not null,
+FOREIGN KEY(msg_usr_name) REFERENCES tb_customer(Usr_name) ON DELETE RESTRICT
+)
+
+
+/*书本评论表*/
+create table tb_bookcomment(
+Re_id int auto_increment PRIMARY KEY,
+Re_writer char(30) not null,
+Re_book_id int not null,
+Re_content text not null,
+Re_time datetime not null
+)
+
+Alter TABLE tb_bookcomment add CONSTRAINT FK_WRITER FOREIGN key(Re_writer) REFERENCES tb_customer(Usr_name)
+Alter TABLE tb_bookcomment add CONSTRAINT FK_BOOK FOREIGN key(Re_book_id) REFERENCES tb_bookinfo(book_id)
+
+INSERT INTO `bookcdb`.`tb_bookcomment` (`Re_writer`, `Re_book_id`, `Re_content`, `Re_time`)
+ VALUES ('kim', '2','书很棒，很喜欢','2017-06-14 11:11:11');
+
+INSERT INTO `bookcdb`.`tb_bookcomment` (`Re_writer`, `Re_book_id`, `Re_content`, `Re_time`)
+ VALUES ('kim',13,'史家之绝唱,无韵之离骚究天人之际，通古今之变，成一家之言。','2017-06-14 11:11:11');
+
+
+
+/*如果评论者没有购买书籍，则不能评论*/
+drop trigger if exists tr_add_comment_num;
+create trigger tr_add_comment_num before insert on tb_bookcomment
+for each row
+begin
+	if(new.Re_book_id in(select order_book_id from tb_order where order_usr=new.Re_writer))
+	then 
+		update tb_bookinfo set book_comment_num=book_comment_num+1;
+	else
+	  INSERT INTO `bookcdb`.`tb_bookcomment` (`Re_id`, `Re_writer`, `Re_book_id`, `Re_content`, `Re_time`) 
+				VALUES ('error');
+	end if;
+end
+
+/*如果购物车清空了订单，则加入order中*/
+drop trigger if exists tr_order;
+create trigger tr_order before UPDATE on tb_shoppingcar
+for each row
+begin
+	if(new.car_book_id in(select car_book_id from tb_shoppingcar where car_usr=new.car_usr and car_ispaid=0))
+	then 
+		INSERT into tb_order (`order_usr`, `order_book_id`, `order_num`, `order_price`, `order_time`)VALUES(new.car_usr,new.car_book_id,new.car_num,new.car_price,SYSDATE()) where ;
+	end if;
+end
+
+/****************************************************************************************************************************************************************************************//
+////////////////////////////////////////////////存储过程//////////////////////////////////////////
+/*设置递归限制*/
+set @@max_sp_recursion_depth=5
+
+
+
+SELECT * from tb_shoppingcar where car_ispaid=0 and car_usr= '1'
+
+CALL Proc_Shopcar('kim',3)
+
+
+select * from tb_shoppingcar_detail;
+select *from tb_shoppingcar
+/**/
+DROP PROCEDURE IF EXISTS Proc_shopcar;
+DELIMITER //
+CREATE PROCEDURE Proc_Shopcar(in usr char(30),in bookid int)
+BEGIN
+		set @cid =1;
+		CALL Proc_ishascar(usr,@cid);
+		if @cid is NULL THEN 
+			INSERT INTO `bookcdb`.`tb_shoppingcar` (`car_usr`, `car_time`, `car_ispaid`,`car_totalprice`) VALUES (usr,NOW(),0,0);
+			CALL Proc_Shopcar(usr,bookid);
+		ELSE
+			set @price=1.0;
+			select book_price into @price from tb_bookinfo where book_id=bookid;
+			CALL Proc_cardetail(bookid,@cid,@price);
+      UPDATE  tb_shoppingcar set car_totalprice =car_totalprice+@price where car_usr=usr and car_ispaid=0;
+		end if;
+
+END //
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS Proc_ishascar;
+DELIMITER //
+CREATE PROCEDURE Proc_ishascar(in usr char(30),out carid int)
+BEGIN
+ select car_id into carid from tb_shoppingcar where car_usr=usr and car_ispaid=0;
+END //
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS Proc_cardetail;
+DELIMITER //
+CREATE PROCEDURE Proc_cardetail(in bookid int,in carid int,in price DECIMAL(10,2))
+BEGIN
+	 set @num=0;
+   CALL Proc_isindetail(bookid,carid,@num);
+	 if @num is NULL THEN 
+			INSERT INTO `bookcdb`.`tb_shoppingcar_detail` (`car_id`,`book_id`, `de_num`, `de_subprice`, `de_time`) VALUES (carid,bookid, 1,price, NOW()); 
+	ELSE
+			update tb_shoppingcar_detail set de_num=@num+1 where book_id=bookid and car_id=carid;
+			update tb_shoppingcar_detail set de_subprice=de_subprice+price  where book_id=bookid and car_id=carid;
+  end if;
+END //
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS Proc_isindetail;
+DELIMITER //
+CREATE PROCEDURE Proc_isindetail(in bookid int,in carid int,out num int)
+BEGIN
+   select de_num into num from tb_shoppingcar_detail where book_id=bookid and car_id=carid;
+END //
+DELIMITER ;
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+set @num=0;
+CALL Proc_isindetail(4,14,@num);
+select @num
+
+
+select de_num from tb_shoppingcar_detail where book_id=4 and car_id=14;
+set @num=10;
+select de_num into @num from tb_shoppingcar_detail where book_id='3' and car_id= '0';
+SELECT @num as '数量'
+
+ set @num=0;
+   CALL Proc_isindetail(4,14,@num);
+if @num =NULL THEN 
+			INSERT INTO `bookcdb`.`tb_shoppingcar_detail` (`car_id`,`book_id`, `de_num`, `de_subprice`, `de_time`) VALUES (14,4, 0,11.1, NOW()); 
+end if;
+
+
+
+
+

@@ -1,0 +1,112 @@
+@CHARSET "UTF-8";
+
+body {
+ font-family: "Open Sans", sans-serif;
+	height:1000px;
+	background: url("../images/cloud.png") 50%;
+	background-size: cover;
+	line-height:0px; padding:0px; 
+	/*使得可以铺满整个屏幕*/
+	margin:0px;
+}
+
+.veiling{
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px; 
+  background: rgba(4, 40, 68, 0.6);
+}
+a{
+	text-decoration: none;
+}
+
+.index-leftnav {
+	height: 50px;
+	width: 200px;
+	margin-left: 50px;
+	margin-top: 10px
+}
+
+.index-leftnav img{
+	height: 50px;
+	width: 120px;
+	border: 0px;
+	margin-left: 0px;
+}
+
+.info-hr0{
+	font-size:0px; line-height:0px; padding-top:-10px; margin:0px;height:3px;background-color:blue;
+}
+
+.info-hr1{
+	font-size:0px; line-height:0px; padding-top:-10px; margin:0px;height:1px;background-color:grey;
+}
+
+
+
+.title{
+    color: #137;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-left: 460px;
+    padding-bottom: 20px;
+	
+}
+
+
+.searchlist {
+  border-radius: 2px 2px 5px 5px;
+  margin-left: 150px;
+  height: 1000px;
+  width: 1100px;
+  background: #fff;
+  position: relative;
+   margin-top: 80px;
+  padding-bottom: 40px;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
+}
+	
+.item{
+    width: 100%;
+    height: 150px;
+    display: flex;
+    margin-top: 10px;
+}
+
+.imgarea{
+	width:130px;
+	height:130px;
+}
+
+.imgarea img{
+	height:130px;
+	width:130px;
+	margin-top: 20px;	
+}
+.author{
+	
+}
+.baseinfo{
+ display: flex;
+    width: 800px;
+}
+
+.baseinfo p{
+	font-family:KaiTi ;
+	line-height:20px;
+	margin-right: 16px;
+    font-size: 20px;
+    font-weight: 300px;
+}
+
+
+.noorder{
+    height: 100%;
+    width: 100%;
+    font-size: 20px;
+    padding-left: 450px;
+    line-height: 400px;
+    color: #808080;
+}

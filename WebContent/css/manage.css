@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+.wel{
+	float:right
+	color:#fff;
+	height:64px; 
+	width:150px;
+	word-break:keep-all;/* 不换行 */ 
+	white-space:nowrap;/* 不换行 */
+} 
+.index-leftnav {
+	float: left;
+	height: 50px;
+	width: 200px;
+	margin-left: 50px;
+	margin-top: 10px
+}
+
+.index-leftnav img{
+	height: 50px;
+	width: 120px;
+	border: 0px;
+	margin-left: 0px;
+}
+
+
+.index-rightnav a{ 
+	font-family: "Open Sans", sans-serif;
+	text-align:center; 
+	height:32px; 
+	line-height:30px; 
+	width:60px;
+	border-radius: 10px;
+	float: right;
+	color:#fff;
+	}
+.index-rightnav a:hover{ 
+    background: rgba(255,215,0,0.7);
+	color:#000;
+	border-radius: 10px;
+}

@@ -1,0 +1,286 @@
+@CHARSET "UTF-8";
+body {
+ font-family: "Open Sans", sans-serif;
+}
+
+.index-welcome{
+	height:750px;
+	background: url("../images/bg.png") 50%;
+	background-size: cover;
+	line-height:0px; padding:0px; 
+	margin-bottom:10px;
+}
+.index-veiling{
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px; 
+  background: rgba(0, 0, 0, 0.75);
+}
+.index-leftnav {
+	float: left;
+	height: 50px;
+	width: 200px;
+	margin-left: 50px;
+	margin-top: 10px
+}
+.index-leftnav img{
+	height: 50px;
+	width: 120px;
+	border: 0px;
+	margin-left: 0px;
+}
+/*右边的样式*/
+.index-rightnav{
+	float: left;
+	height: 32px;
+	width: 300px;
+	display: flex;
+	padding-left: 100px;	
+	margin-top: 10px;
+}
+.index-rightnav a{ 
+	font-family: "Open Sans", sans-serif;
+	text-align:center; 
+	height:32px; 
+	line-height:30px; 
+	width:60px;
+	border-radius: 10px;
+	color:#fff;
+	}
+.index-rightnav a:hover{ 
+    background: rgba(255,215,0,0.7);
+	color:#000;
+	border-radius: 10px;
+}
+
+/*注册与登陆的样式*/
+.log{
+	 display: flex;
+	 height:32px; 
+	 width:60px;
+	 background: rgba(154,205,50,0.4);
+	 border-radius: 30px;
+}
+
+.reg{
+	 display: flex;
+	 height:32px; 
+	 width:60px;	
+	 background: rgba(255,165,0,0.4);
+	 border-radius: 30px;
+}
+
+.wel{
+	color:#fff;
+	height:64px; 
+	width:150px;
+
+}
+.wel a{	
+	font-family: "Open Sans", sans-serif;
+	text-align:center; 
+	height:40px; 
+	line-height:30px; 
+	width:150px;
+}
+
+.wel a:hover{ 
+    background: rgba(0,255,255,0.7);
+	color:#000;
+	border-radius: 2px;
+}
+.wel img{
+	float:left;
+	height: 20px;
+	width: 20px;
+	margin-top:7px;
+	border: 0px;
+	margin-left: 0px;
+}
+
+
+ul{ list-style:none; background-color:#efefef; line-height:0px; padding:0px; margin:0px;}
+a{color:#333;text-decoration:none}
+.index-na li{float:left;}
+.index-na li a{ display:block; text-align:center; height:30px; line-height:30px; width:100px; background-color:#efefef;}
+.index-na li a:hover{ background-color:#F60; color:#fff}
+
+.index-hr0{
+	font-size:0px; line-height:0px; padding-top:-10px; margin:0px;height:3px;background-color:blue;
+}
+
+
+/*指t中的元素，不是t本身*/
+
+
+.t{
+	 display: flex;
+}
+/*用于5个图标的样式*/
+.indexs{
+	display:none;
+	font-size: 30px;
+	margin-top:100px;
+	 max-height:340px;
+	 width:150px;
+/*	 background: rgba(255,255,255,0.6);*/
+	 border-radius: 30px;
+}
+.indexs a{	
+	color:#000;
+	display:table-cell;
+	text-align:center; 
+	height:340px; 
+	line-height:270px; 
+	width:150px;
+	border-radius: 30px;
+}
+
+.indexs a:hover{ 
+	background:rgba(255,215,235,0.2);
+	color:#ffa500;
+	border-radius: 30px;
+	}
+	
+#d1{
+	font-family:STXinwei;
+	margin-left:150px;
+	background:url("../images/d1.png");
+    background-size: 100%;
+    opacity:0.8;    
+}
+
+#d2{
+	
+	font-family:STXinwei;
+	margin-left:150px;
+	background:url("../images/d2.png");
+	background-size: 100%;
+	opacity:0.8;    
+}
+#d3{
+	font-family:STXinwei;
+	margin-left:150px;
+	background:url("../images/d3.png");
+	background-size: 100%;
+	opacity:0.8;    
+}
+#d4{
+	font-family:STXinwei;
+	margin-left:150px;
+	background:url("../images/d4.png");
+	background-size: 100%;
+	opacity:0.8;    
+}
+#d5{
+	font-family:STXinwei;
+	margin-left:100px;
+	background:url("../images/d5.png");	
+	background-size: 100%;
+	opacity:0.8;    
+}
+
+
+/*书本显示样式*/
+.index-booksheet{
+    background: rgba(210,105,30,0.7);
+    display: block;
+    font-family: STXinwei;
+    font-size: 40px;
+    color: #fff;
+    height: 40px;
+    width: 200px;
+    padding: 0px;
+  	margin-top: 60px;
+}
+
+#firstsheet{
+	 margin-top: 0px;
+}
+
+#secondsheet{
+	
+}
+
+#thirdsheet{
+	
+}
+
+.sheet{
+	display: flex;
+	 margin-top: 50px;
+}
+#id{
+	 margin-top: 0px;
+}
+
+.type{
+	display:block;
+	padding-up:15px;
+	margin-left:100px;
+	width:100px;
+	height:150px;
+}
+.type a{
+	color:#000;
+	display:table-cell;
+	text-align:center; 
+	height:340px; 
+	line-height:270px; 
+	width:150px;
+	border-radius: 30px;
+}
+.book{
+	display:block;
+	padding-up:15px;
+	margin-left:100px;
+	width:180px;
+	height:230px;
+}
+.book img{
+	width:150px;
+	height:150px;
+}
+p.title{
+    font-weight: 900;
+    margin-left: 30px;
+    margin-top: 2px;
+    margin-bottom: 1px;
+    font-size: 15px;
+}
+p.author{
+    color: #a9a9a9;
+    margin-left: 30px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    font-size: 15px;
+}
+p.vprice{
+    font-size: 15px;
+    margin-left: 30px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    font-weight: 900;
+    float: left;
+    color: #f00;
+}
+
+p.price{
+    font-size: 15px;
+    margin-left: 20px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    float: left;
+    text-decoration: line-through;
+    color: #a9a9a9;
+}
+
+p.no{
+	
+}
+
+.noBooks{
+	
+}
+
